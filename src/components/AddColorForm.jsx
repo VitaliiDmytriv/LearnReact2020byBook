@@ -1,19 +1,18 @@
+import { useColors } from "../hooks/useColors";
 import { useInput } from "../hooks/useInput";
 
-
-function AddColorForm({ onNewColor = f => f }) {
+function AddColorForm() {
 
     const [titleProps, resetTitle] = useInput('')
     const [colorProps, resetColor] = useInput('#000000')
+    const {addColor} = useColors()
 
     const submit = e => {
         e.preventDefault()
-        onNewColor(titleProps.value, colorProps.value)
+        addColor(titleProps.value, colorProps.value)
         resetTitle()
         resetColor()
     }
-
-    console.log(titleProps);
 
     return ( 
         <form onSubmit={submit} >
