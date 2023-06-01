@@ -1,17 +1,28 @@
-import { useValue } from "./hooks/useValue";
-import "./style/index.css";
-import { DECREMENT, INCREMENT } from "./context/variables";
+import { useCallback } from "react";
+import { useState, memo } from "react";
+import './style/index.css'
+
+const Cat = ({name,meow = f => f}) => {
+    console.log(`rendering ${name}`);
+    return <p onClick={() => meow(name)}>{ name}</p>
+}
+
+const PureCat = memo(Cat)
 
 function App() {
-
-    const { value, handleClick } = useValue()
-
+    const [cats,setCats] = useState(['Outlaw','Jungle','Biscuit'])
+    const meow = useCallback(name => console.log(`${name} has meowed`),[])
     return (
-        <div className="ml-4 mt-4 flex gap-4 items-center">
-            <button onClick={()=>handleClick(DECREMENT)} className="border-2 p-2 shadow-md">Decrement</button>
-            <h2>{ value}</h2>
-            <button onClick={()=>handleClick(INCREMENT)} className="border-2 p-2 shadow-md">Increment</button>
-        </div>
+        <main className="p-7">
+            {cats.map((name, i) => (
+                <PureCat key={i} name = {name} meow = {meow} />
+            ))}
+
+            <button
+                className="border-2 bg-slate-400 mt-3 p-2"
+                onClick={()=> setCats([...cats,prompt('Name a cat')])}
+            >Add a cat</button>
+        </main>
     )
 }
 

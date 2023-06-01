@@ -1,11 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { ValueProvider } from "./context/valueProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-    <ValueProvider>
-        <App />
-    </ValueProvider>
-);
+root.render(<App />);
