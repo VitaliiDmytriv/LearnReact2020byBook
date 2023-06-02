@@ -1,18 +1,50 @@
-import { useValue } from "./hooks/useValue";
-import "./style/index.css";
-import { DECREMENT, INCREMENT } from "./context/variables";
+import { useEffect } from "react";
+import { useState } from "react";
 
-function App() {
+// const loadJSON = key =>
+// key && JSON.parse(localStorage.getItem(key));
+// const saveJSON = (key, data) =>
+// localStorage.setItem(key, JSON.stringify(data));
 
-    const { value, handleClick } = useValue()
+function GitHubUser({login}) {
+
+    const [data, setData] = useState()
+    const [error, setError] = useState()
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        if (!login) return;
+        setLoading(true)
+        fetch(`https://api.github.com/users/${login}`)
+            .then(response => response.json())
+            .then(setData)
+            .then(()=> setLoading(false))
+            .catch(setError);
+    }, [login]);
+
+    if (loading) return <h1>loading ...</h1>
+    if (error) return <pre>{ JSON.stringify(error,null,2)}</pre>
+    if (!data) return null
 
     return (
-        <div className="ml-4 mt-4 flex gap-4 items-center">
-            <button onClick={()=>handleClick(DECREMENT)} className="border-2 p-2 shadow-md">Decrement</button>
-            <h2>{ value}</h2>
-            <button onClick={()=>handleClick(INCREMENT)} className="border-2 p-2 shadow-md">Increment</button>
+        <div>
+            <img
+                src={ data.avatar_url}
+                alt={data.login} 
+                style={{width:200}}
+            />
+            <div>
+                <h1>{data.login}</h1>
+                {data.name && <p>{data.name }</p>}
+                {data.location && <p>{data.location }</p>}
+            </div>
         </div>
     )
+}
+
+
+function App() {
+    return <GitHubUser login={'VitaliiDmytriv'}/>
 }
 
 export default App;
