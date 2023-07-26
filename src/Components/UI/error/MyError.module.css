@@ -1,0 +1,16 @@
+.MyError {
+    border: 1px solid teal;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding-block: 2rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.errorMessage {
+    color: red;
+}
